@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:elections_app/Models/candidates.dart';
 import 'package:elections_app/candidate_reg(g).dart';
 import 'package:elections_app/citizens_Details(d).dart';
 import 'package:elections_app/Models/citiezens.dart';
@@ -8,12 +9,15 @@ import 'package:elections_app/candidate_details(v).dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class RegisterCandid extends StatefulWidget {
+class UpdateCitizen extends StatefulWidget {
+  final Citizen? citizen;
+
+  const UpdateCitizen({Key? key, this.citizen}) : super(key: key);
   @override
-  State<RegisterCandid> createState() => _RegisterCandidState();
+  State<UpdateCitizen> createState() => _UpdateCitizenState();
 }
 
-class _RegisterCandidState extends State<RegisterCandid> {
+class _UpdateCitizenState extends State<UpdateCitizen> {
   @override
   Widget build(BuildContext context) {
     const appTitle = 'Registration';
@@ -23,14 +27,18 @@ class _RegisterCandidState extends State<RegisterCandid> {
         title: const Text(appTitle),
         backgroundColor: Colors.red,
       ),
-      body: const MyCustomForm(),
+      body: MyCustomForm(
+        citizen: widget.citizen!,
+      ),
     );
   }
 }
 
 // Create a Form widget.
 class MyCustomForm extends StatefulWidget {
-  const MyCustomForm({Key? key}) : super(key: key);
+  final Citizen? citizen;
+
+  const MyCustomForm({Key? key, this.citizen}) : super(key: key);
 
   @override
   MyCustomFormState createState() {
@@ -47,6 +55,58 @@ class MyCustomFormState extends State<MyCustomForm> {
     super.initState();
     for (int i = 0; i < 9; i++) {
       TextEditingController controller = TextEditingController();
+      switch (i) {
+        case 0:
+          {
+            controller.text = widget.citizen!.name!;
+            break;
+          }
+        case 1:
+          {
+            controller.text = widget.citizen!.nationalID!.toString();
+            break;
+          }
+        case 2:
+          {
+            controller.text = widget.citizen!.email!;
+            break;
+          }
+        case 3:
+          {
+            controller.text = widget.citizen!.age!.toString();
+            break;
+          }
+        case 4:
+          {
+            controller.text = widget.citizen!.gender!.toString();
+            break;
+          }
+        case 5:
+          {
+            controller.text = widget.citizen!.nationality!.toString();
+            break;
+          }
+        case 6:
+          {
+            controller.text = widget.citizen!.bio!.toString();
+            break;
+          }
+        case 7:
+          {
+            controller.text = widget.citizen!.location!.toString();
+            break;
+          }
+        case 8:
+          {
+            controller.text = widget.citizen!.status!.toString();
+            break;
+          }
+
+        default:
+          {
+            break;
+          }
+      }
       textControllers.add(controller);
     }
   }
@@ -260,7 +320,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                       onPressed: () async {
                         try {
                           var url = Uri.parse(
-                            "https://electionsystembackend.azurewebsites.net/candids/AddCandid",
+                            "https://electionsystembackend.azurewebsites.net/candids/UpdateCandid",
                           );
                           await http.post(url, body: {
                             "Name": textControllers[0].text,

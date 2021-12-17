@@ -1,62 +1,19 @@
 import 'dart:convert';
-import 'package:elections_app/Models/candidate.dart';
+import 'package:elections_app/Models/citiezens.dart';
 import 'package:elections_app/voterpage(v).dart';
 import 'package:elections_app/candidate_details(v).dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class citizen_details extends StatefulWidget {
-  const citizen_details({Key? key}) : super(key: key);
+class CitizenDetails extends StatefulWidget {
+  const CitizenDetails({Key? key, this.citizen}) : super(key: key);
+  final Citizen? citizen;
 
   @override
-  _citizen_detailsState createState() => _citizen_detailsState();
+  _CitizenDetailsState createState() => _CitizenDetailsState();
 }
 
-class _citizen_detailsState extends State<citizen_details> {
-  List<Citizen> futureCitizens = [];
-  bool? isLoading;
-  Map<int, bool> isAuth = {};
-  List<bool> isDeleted = [];
-  bool switchValue = false;
-
-  @override
-  void initState() {
-    super.initState();
-    isLoading = true;
-    fetchCitizens();
-  }
-
-  fetchCitizens() async {
-    var url =
-        Uri.parse("https://mocki.io/v1/9a155451-c025-4c24-b63a-15d7e79ede43");
-    var response = await http.get(url);
-    var parsedResponse = jsonDecode(response.body);
-    List<Citizen> citizens = [];
-    int counter = 0;
-    parsedResponse.forEach((citizen) {
-      citizens.add(Citizen.fromJson(citizen));
-    });
-    setState(() {
-      isLoading = false;
-      futureCitizens = citizens;
-    });
-
-    for (int i = 0; i < futureCitizens.length; i++) {
-      setState(() {
-        //TODO: delete the if statment and make it like this
-        /*
-          isAuth[futureCitizens[index].id] = futureCitizens[index].isVoted;
-        */
-
-        if (futureCitizens[i].isVoted == 1) {
-          isAuth[futureCitizens[i].id!.toInt()] = true;
-        } else {
-          isAuth[futureCitizens[i].id!.toInt()] = false;
-        }
-      });
-    }
-  }
-
+class _CitizenDetailsState extends State<CitizenDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -72,7 +29,7 @@ class _citizen_detailsState extends State<citizen_details> {
             ClipRRect(
               borderRadius: BorderRadius.circular(100),
               child: Image.network(
-                'https://th.bing.com/th/id/OIP.rojxhaq0suOFtySn_lbWvAHaLH?w=185&h=278&c=7&r=0&o=5&pid=1.7',
+                widget.citizen!.image!,
                 height: 200,
                 width: 200,
               ),
@@ -88,10 +45,12 @@ class _citizen_detailsState extends State<citizen_details> {
                         Text("Name :" + "  ",
                             style: TextStyle(
                                 fontSize: 22.0, fontWeight: FontWeight.bold)),
-                        Text("Mohammad jaber",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                            )),
+                        Text(
+                          widget.citizen!.name!,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -102,7 +61,10 @@ class _citizen_detailsState extends State<citizen_details> {
                         Text("National ID :" + "  ",
                             style: TextStyle(
                                 fontSize: 22.0, fontWeight: FontWeight.bold)),
-                        Text("9910234525", style: TextStyle(fontSize: 20.0)),
+                        Text(
+                          widget.citizen!.nationalID!.toString(),
+                          style: TextStyle(fontSize: 20.0),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -113,10 +75,12 @@ class _citizen_detailsState extends State<citizen_details> {
                         Text("Nationality :" + "  ",
                             style: TextStyle(
                                 fontSize: 22.0, fontWeight: FontWeight.bold)),
-                        Text("Jordainian",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                            )),
+                        Text(
+                          widget.citizen!.nationality!.toString(),
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -124,13 +88,17 @@ class _citizen_detailsState extends State<citizen_details> {
                     ),
                     Row(
                       children: [
-                        Text("Location :   ",
-                            style: TextStyle(
-                                fontSize: 22.0, fontWeight: FontWeight.bold)),
-                        Text("Amman",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                            )),
+                        Text(
+                          "Location :   ",
+                          style: TextStyle(
+                              fontSize: 22.0, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.citizen!.location!.toString(),
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -141,10 +109,12 @@ class _citizen_detailsState extends State<citizen_details> {
                         Text("Age :" + "  ",
                             style: TextStyle(
                                 fontSize: 22.0, fontWeight: FontWeight.bold)),
-                        Text("31",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                            )),
+                        Text(
+                          widget.citizen!.age!.toString(),
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -155,10 +125,12 @@ class _citizen_detailsState extends State<citizen_details> {
                         Text("Gender :" + "  ",
                             style: TextStyle(
                                 fontSize: 22.0, fontWeight: FontWeight.bold)),
-                        Text("Male",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                            )),
+                        Text(
+                          widget.citizen!.gender!.toString(),
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -169,7 +141,7 @@ class _citizen_detailsState extends State<citizen_details> {
                         Text("is Voted :" + "  ",
                             style: TextStyle(
                                 fontSize: 22.0, fontWeight: FontWeight.bold)),
-                        /*(futureCitizens[index].isVoted == 1)
+                        (widget.citizen!.isVoted == 1)
                             ? Row(
                                 children: [
                                   Icon(
@@ -199,46 +171,28 @@ class _citizen_detailsState extends State<citizen_details> {
                                     ),
                                   ),
                                 ],
-                              ),*/
+                              ),
                       ],
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Row(
-                          children: [
-                            Text("Allow to Vote :" + "  ",
-                                style: TextStyle(
-                                    fontSize: 22.0,
-                                    fontWeight: FontWeight.bold)),
-                            /*Switch(
-                              value: isAuth[futureCitizens[index].id] ?? false,
-                              activeColor: Colors.green,
-                              inactiveThumbColor: Colors.red,
-                              inactiveTrackColor: Colors.red,
-                              //TODO: Make the function async
-                              onChanged: (value) {
-                                print("Changed value: $value");
-                                setState(() {
-                                  isAuth[futureCitizens[index].id!] = value;
-                                  print(
-                                      "Map value after changing: ${isAuth[futureCitizens[index].id!]}");
-                                });
-                                /*
-                                              var url = Uri.parse("TODO: PUT THE ENDPOINT FOR THE CITIZEN");
-                                              int status;
-                                              if(value == true) status = 1; else status = 0;
-                                              await http.post(url, body: {"Status": "$status"});
-                                            */
-                              },
-                            ),*/
-                          ],
+                      children: [
+                        Text(
+                          "Allow to Vote :" +
+                              "  " +
+                              widget.citizen!.status!.toString(),
+                          style: TextStyle(
+                              fontSize: 22.0, fontWeight: FontWeight.bold),
                         ),
+                      ],
+                    ),
                   ],
                 ))
           ],
         ),
       ),
-    
     );
   }
-
 }

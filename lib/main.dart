@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'package:elections_app/candidate_reg(g).dart';
 import 'package:elections_app/citizens_Details(d).dart';
-import 'package:elections_app/Models/candidate.dart';
+import 'package:elections_app/Models/citiezens.dart';
 import 'package:elections_app/government(g).dart';
+import 'package:elections_app/update_citizens.dart';
 import 'package:elections_app/voterpage(v).dart';
-import 'package:elections_app/candidate_details(v).dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,21 +22,20 @@ class _ElectionAppState extends State<ElectionApp> {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: citizenPage(),
+      home: gov(),
       debugShowCheckedModeBanner: false,
-      
     );
   }
 }
-
-class citizenPage extends StatefulWidget {
-  const citizenPage({Key? key}) : super(key: key);
+//صفحة الهيئة
+class CitizenPage extends StatefulWidget {
+  const CitizenPage({Key? key}) : super(key: key);
 
   @override
-  _VoterPageState createState() => _VoterPageState();
+  _CitizenPageState createState() => _CitizenPageState();
 }
 
-class _VoterPageState extends State<citizenPage> {
+class _CitizenPageState extends State<CitizenPage> {
   List<Citizen> futureCitizens = [];
   bool? isLoading;
   Map<int, bool> isAuth = {};
@@ -52,8 +50,8 @@ class _VoterPageState extends State<citizenPage> {
   }
 
   fetchCitizens() async {
-    var url =
-        Uri.parse("https://mocki.io/v1/9a155451-c025-4c24-b63a-15d7e79ede43");
+    var url = Uri.parse(
+        "https://electionsystembackend.azurewebsites.net/voters/AllVoters");
     var response = await http.get(url);
     var parsedResponse = jsonDecode(response.body);
     List<Citizen> citizens = [];
@@ -68,10 +66,6 @@ class _VoterPageState extends State<citizenPage> {
 
     for (int i = 0; i < futureCitizens.length; i++) {
       setState(() {
-        //TODO: delete the if statment and make it like this
-        /*
-          isAuth[futureCitizens[index].id] = futureCitizens[index].isVoted;
-        */
         isDeleted.add(false);
         if (futureCitizens[i].isVoted == 1) {
           isAuth[futureCitizens[i].id!.toInt()] = true;
@@ -169,10 +163,15 @@ class _VoterPageState extends State<citizenPage> {
                                                 InkWell(
                                                   onTap: () {
                                                     Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (ctx) =>
-                                                                citizen_details()));
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            CitizenDetails(
+                                                                citizen:
+                                                                    futureCitizens[
+                                                                        index]),
+                                                      ),
+                                                    );
                                                   },
                                                   child: Icon(
                                                     Icons.info_outline_rounded,
@@ -185,12 +184,10 @@ class _VoterPageState extends State<citizenPage> {
                                           ],
                                         ),
                                         SizedBox(height: 4),
-                                        //TODO(Khalifa): Remove the .toString after changing the location to string.
                                         Text(
-                                            "National ID :   ${futureCitizens[index].nationalID}",
+                                            "National ID :   ${futureCitizens[index].nationalID.toString()}",
                                             style: TextStyle(fontSize: 15)),
                                         SizedBox(height: 4),
-                                        //TODO(Khalifa): Remove the .toString after changing the location to string.
                                         Text(
                                             "Location:   ${futureCitizens[index].location.toString()}",
                                             style: TextStyle(fontSize: 15)),
@@ -226,7 +223,6 @@ class _VoterPageState extends State<citizenPage> {
                                                   ),
                                                 ],
                                               ),
-
                                         Row(
                                           children: [
                                             Text(
@@ -241,22 +237,38 @@ class _VoterPageState extends State<citizenPage> {
                                               activeColor: Colors.green,
                                               inactiveThumbColor: Colors.red,
                                               inactiveTrackColor: Colors.red,
-                                              //TODO: Make the function async
-                                              onChanged: (value) {
-                                                print("Changed value: $value");
+                                              onChanged: (value) async {
                                                 setState(() {
                                                   isAuth[futureCitizens[index]
                                                       .id!] = value;
-                                                  print(
-                                                      "Map value after changing: ${isAuth[futureCitizens[index].id!]}");
                                                 });
-                                                /*
-                                              var url = Uri.parse("TODO: PUT THE ENDPOINT FOR THE CITIZEN");
-                                              int status;
-                                              if(value == true) status = 1; else status = 0;
-                                              await http.post(url, body: {"Status": "$status"});
-                                            */
+                                                var url = Uri.parse(
+                                                    "https://electionsystembackend.azurewebsites.net/voters/ChangeStatus?status=0&nationalID=9991043225");
+                                                int status;
+                                                if (value == true)
+                                                  status = 1;
+                                                else
+                                                  status = 0;
+                                                await http.post(url, body: {
+                                                  "Status": "$status"
+                                                });
                                               },
+                                            ),
+                                            SizedBox(width: 10),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (ctx) =>
+                                                        UpdateCitizen(
+                                                      citizen:
+                                                          futureCitizens[index],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text("Edit"),
                                             ),
                                           ],
                                         ),

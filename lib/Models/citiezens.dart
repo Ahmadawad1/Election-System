@@ -1,8 +1,6 @@
 import 'package:http/http.dart' as http;
 
 class Citizen {
-  //TODO(Khalifa): Change the nationality and location to strings and the isVoted to boolean.
-  //TODO: Change the gender to boolean and add a boolean for the authorization and delete the bio parameter.
   String? name;
   int? id;
   int? nationalID;
