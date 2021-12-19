@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:elections_app/candidate_reg(g).dart';
-import 'package:elections_app/citizens_Details(d).dart';
+import 'package:elections_app/src/candidate_reg(g).dart';
+import 'package:elections_app/src/citizens_Details(d).dart';
 import 'package:elections_app/Models/citiezens.dart';
-import 'package:elections_app/government(g).dart';
-import 'package:elections_app/voterpage(v).dart';
-import 'package:elections_app/candidate_details(v).dart';
-import 'package:elections_app/Statistics.dart';
+import 'package:elections_app/src/government(g).dart';
+import 'package:elections_app/src/voterpage(v).dart';
+import 'package:elections_app/src/candidate_details(v).dart';
+import 'package:elections_app/src/Statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

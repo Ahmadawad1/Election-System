@@ -1,23 +1,23 @@
 import 'dart:convert';
-import 'package:elections_app/Models/candidates.dart';
-import 'package:elections_app/candidate_reg(g).dart';
-import 'package:elections_app/citizens_Details(d).dart';
+import '../Models/candidates.dart';
+import '../src/candidate_reg(g).dart';
+import '../src/citizens_Details(d).dart';
 import 'package:elections_app/Models/citiezens.dart';
-import 'package:elections_app/government(g).dart';
-import 'package:elections_app/voterpage(v).dart';
-import 'package:elections_app/candidate_details(v).dart';
+import '../src/government(g).dart';
+import '../src/voterpage(v).dart';
+import '../src/candidate_details(v).dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class UpdateCandid extends StatefulWidget {
-  final Candidate? candidate;
+class UpdateCitizen extends StatefulWidget {
+  final Citizen? citizen;
 
-  const UpdateCandid({Key? key, this.candidate}) : super(key: key);
+  const UpdateCitizen({Key? key, this.citizen}) : super(key: key);
   @override
-  State<UpdateCandid> createState() => _UpdateCandidState();
+  State<UpdateCitizen> createState() => _UpdateCitizenState();
 }
 
-class _UpdateCandidState extends State<UpdateCandid> {
+class _UpdateCitizenState extends State<UpdateCitizen> {
   @override
   Widget build(BuildContext context) {
     const appTitle = 'Registration';
@@ -28,7 +28,7 @@ class _UpdateCandidState extends State<UpdateCandid> {
         backgroundColor: Colors.red,
       ),
       body: MyCustomForm(
-        candidate: widget.candidate!,
+        citizen: widget.citizen!,
       ),
     );
   }
@@ -36,9 +36,9 @@ class _UpdateCandidState extends State<UpdateCandid> {
 
 // Create a Form widget.
 class MyCustomForm extends StatefulWidget {
-  final Candidate? candidate;
+  final Citizen? citizen;
 
-  const MyCustomForm({Key? key, this.candidate}) : super(key: key);
+  const MyCustomForm({Key? key, this.citizen}) : super(key: key);
 
   @override
   MyCustomFormState createState() {
@@ -58,47 +58,47 @@ class MyCustomFormState extends State<MyCustomForm> {
       switch (i) {
         case 0:
           {
-            controller.text = widget.candidate!.name!;
+            controller.text = widget.citizen!.name!;
             break;
           }
         case 1:
           {
-            controller.text = widget.candidate!.nationalID!.toString();
+            controller.text = widget.citizen!.nationalID!.toString();
             break;
           }
         case 2:
           {
-            controller.text = widget.candidate!.email!;
+            controller.text = widget.citizen!.email!;
             break;
           }
         case 3:
           {
-            controller.text = widget.candidate!.age!.toString();
+            controller.text = widget.citizen!.age!.toString();
             break;
           }
         case 4:
           {
-            controller.text = widget.candidate!.gender!.toString();
+            controller.text = widget.citizen!.gender!.toString();
             break;
           }
         case 5:
           {
-            controller.text = widget.candidate!.nationality!.toString();
+            controller.text = widget.citizen!.nationality!.toString();
             break;
           }
         case 6:
           {
-            controller.text = widget.candidate!.bio!.toString();
+            controller.text = widget.citizen!.bio!.toString();
             break;
           }
         case 7:
           {
-            controller.text = widget.candidate!.location!.toString();
+            controller.text = widget.citizen!.location!.toString();
             break;
           }
         case 8:
           {
-            controller.text = widget.candidate!.status!.toString();
+            controller.text = widget.citizen!.status!.toString();
             break;
           }
 

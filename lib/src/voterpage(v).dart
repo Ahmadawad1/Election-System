@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:elections_app/Models/candidates.dart';
-import 'package:elections_app/citizens_Details(d).dart';
+import '../src/citizens_Details(d).dart';
 import 'package:elections_app/Models/citiezens.dart';
-import 'package:elections_app/candidate_details(v).dart';
+import '../src/candidate_details(v).dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

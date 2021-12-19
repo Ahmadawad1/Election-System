@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:elections_app/update_candidates.dart';
-import 'Models/candidates.dart';
+import 'package:elections_app/src/update_candidates.dart';
+import '../Models/candidates.dart';
 import 'package:elections_app/Models/candidates.dart';
-import 'package:elections_app/candidate_details(v).dart';
+import 'package:elections_app/src/candidate_details(v).dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,6 +26,7 @@ class _GetCandidsState extends State<GetCandids> {
   }
 
   fetchCandidates() async {
+    print('Fetch');
     var url = Uri.parse(
         "https://electionsystembackend.azurewebsites.net/candids/AllCandids");
     try {
@@ -163,9 +164,9 @@ class _GetCandidsState extends State<GetCandids> {
                             ),
                             onTap: () async {
                               //TODO: Fill the delete url
-                              var url = Uri.parse("PUT URL HERE INSIDE QUTOES"); 
+                              var url = Uri.parse("PUT URL HERE INSIDE QUTOES");
                               var response = await http.post(url);
-                              setState((){
+                              setState(() {
                                 isDeleted[candidate.id!] = true;
                               });
                             },
@@ -175,7 +176,7 @@ class _GetCandidsState extends State<GetCandids> {
                     ),
                   ),
                 );
-              }else{
+              } else {
                 return SizedBox(width: 0, height: 0);
               }
             },
